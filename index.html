@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login System</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+    <section class="d-flex justify-content-center align-items-center vh-100">
+        <div class="main col-md-7 col-10">
+            <input type="checkbox" id="chk" aria-hidden="true" checked>
+
+            <div class="signup">
+                <form>
+                    <label for="chk" aria-hidden="true">Sign up</label>
+                    <input type="text" name="UserName" class="form-control" placeholder="User name"
+                        autocomplete="username">
+                    <input type="email" name="Email" class="form-control" placeholder="Email" autocomplete="email">
+                    <p class="d-none alert alert-danger mb-0 mx-auto py-1">
+                            Please enter a valid email address.
+                    </p>
+                    <input type="password" name="pswd" class="form-control" placeholder="Password"
+                        autocomplete="new-password">
+                    <button class="sign-up">Sign up</button>
+                </form>
+            </div>
+
+            <div class="login">
+                <form>
+                    <label for="chk" aria-hidden="true">Login</label>
+                    <input type="email" name="email" class="form-control" placeholder="Email" autocomplete="email">
+                    <input type="password" name="password" class="form-control" placeholder="Password"
+                        autocomplete="current-password">
+                    <p class="d-none incorrect-email text-center text-danger">
+                        incorrect email or password
+                    </p>
+                    <button class="sign-in">Login</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script src="./main.js"></script>
+</body>
+
+</html>
