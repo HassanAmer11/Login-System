@@ -32,13 +32,30 @@ loginBtn.addEventListener("click", function (event) {
 var usersList = JSON.parse(localStorage.getItem("users")) || [];
 
 function addNewUsr() {
-  var user = {
-    userName: userNameInput.value,
-    email: emailInput.value,
-    password: passwordInput.value,
-  };
-  usersList.push(user);
-  localStorage.setItem("users", JSON.stringify(usersList));
+  document.getElementById("exist").innerHTML = "";
+  if (
+    validateform(emailInput) &&
+    validateform(userNameInput) &&
+    validateform(passwordInput)
+  ) {
+    for (let i = 0; i < usersList.length; i++) {
+      const person = usersList[i];
+      if (person.email.toLowerCase() == emailInput.value.toLowerCase()) {
+        document.getElementById("exist").innerHTML =
+          '<span class="text-danger m-3">E-mail already exists</span>';
+        return false;
+      }
+    }
+    var user = {
+      userName: userNameInput.value,
+      email: emailInput.value,
+      password: passwordInput.value,
+    };
+    usersList.push(user);
+    localStorage.setItem("users", JSON.stringify(usersList));
+    document.getElementById("exist").innerHTML =
+      '<span class="text-success m-3">Success</span>';
+  }
 }
 
 function Login() {
@@ -57,24 +74,36 @@ function Login() {
 }
 
 emailInput.addEventListener("input", function (event) {
-  debugger
-  validateEmailAddress();
-})
+  validateform(event.target);
+});
 
-function validateEmailAddress() {
-  var regex =
-    /(?:[a-z0-9!#$%&'*+\x2f=?^_`\x7b-\x7d~\x2d]+(?:\.[a-z0-9!#$%&'*+\x2f=?^_`\x7b-\x7d~\x2d]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9\x2d]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\x2d]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9\x2d]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+passwordInput.addEventListener("input", function (event) {
+  validateform(event.target);
+});
 
-  if (regex.test(emailInput.value)) {
+userNameInput.addEventListener("input", function (event) {
+  validateform(event.target);
+});
+
+function validateform(inputPram) {
+  var vaildObj = {
+    Email:
+      /(?:[a-z0-9!#$%&'*+\x2f=?^_`\x7b-\x7d~\x2d]+(?:\.[a-z0-9!#$%&'*+\x2f=?^_`\x7b-\x7d~\x2d]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9\x2d]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\x2d]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9\x2d]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
+    UserName: /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/,
+    pswd: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+  };
+
+  if (vaildObj[inputPram.name].test(inputPram.value)) {
     //hide error pragraph + set vaild class
-    emailInput.nextElementSibling.classList.add("d-none");
-    emailInput.classList.remove("is-invalid");
-    emailInput.classList.add("is-valid");
-  }
-  else {
+    inputPram.nextElementSibling.classList.add("d-none");
+    inputPram.classList.remove("is-invalid");
+    inputPram.classList.add("is-valid");
+    return true;
+  } else {
     //show error pragraph + set invaild class
-    emailInput.nextElementSibling.classList.remove("d-none");
-    emailInput.classList.remove("is-valid");
-    emailInput.classList.add("is-invalid");
+    inputPram.nextElementSibling.classList.remove("d-none");
+    inputPram.classList.remove("is-valid");
+    inputPram.classList.add("is-invalid");
+    return false;
   }
 }
